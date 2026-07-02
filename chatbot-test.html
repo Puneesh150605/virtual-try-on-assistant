@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .chat-bubble-bot {
+            background-color: #f9d7e6;
+            border-radius: 18px 18px 18px 4px;
+            padding: 12px;
+            max-width: 75%;
+            margin-bottom: 12px;
+        }
+        
+        .chat-bubble-user {
+            background-color: #ec4899;
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+            padding: 12px;
+            max-width: 75%;
+            margin-bottom: 12px;
+        }
+        
+        #chatbot {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="p-8 max-w-md mx-auto bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center text-pink-500">Chatbot Testing Page</h1>
+        
+        <div class="mb-6">
+            <p class="text-gray-700 mb-2">Click the button to toggle the chatbot:</p>
+            <button id="chatbot-toggle-test" class="w-full bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600">
+                Toggle Chatbot
+            </button>
+        </div>
+        
+        <!-- Chatbot -->
+        <div id="chatbot" class="bg-white rounded-lg shadow-xl overflow-hidden" style="transform: translateY(20px); opacity: 0;">
+            <div class="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-4 flex justify-between items-center">
+                <h3 class="font-bold">Beauty Assistant</h3>
+                <button id="close-chatbot" class="text-white focus:outline-none hover:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="chat-messages" class="p-4 h-60 overflow-y-auto">
+                <div class="flex mb-4">
+                    <div class="chat-bubble-bot">
+                        <p class="text-gray-800">Hi there! I'm your beauty assistant. How can I help you with makeup today?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t p-4">
+                <div class="flex">
+                    <input type="text" id="chat-input" placeholder="Ask about makeup..." class="flex-1 p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <button id="send-message" class="bg-pink-500 text-white p-2 rounded-r-lg hover:bg-pink-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const toggleButton = document.getElementById('chatbot-toggle-test');
+            const chatbot = document.getElementById('chatbot');
+            const closeButton = document.getElementById('close-chatbot');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-message');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Toggle chatbot visibility
+            toggleButton.addEventListener('click', function() {
+                console.log('Toggle clicked');
+                if (chatbot.style.transform === 'translateY(20px)' || chatbot.style.opacity === '0') {
+                    chatbot.style.transform = 'translateY(0)';
+                    chatbot.style.opacity = '1';
+                } else {
+                    chatbot.style.transform = 'translateY(20px)';
+                    chatbot.style.opacity = '0';
+                }
+            });
+            
+            // Close chatbot
+            closeButton.addEventListener('click', function() {
+                console.log('Close clicked');
+                chatbot.style.transform = 'translateY(20px)';
+                chatbot.style.opacity = '0';
+            });
+            
+            // Send message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Add user message
+                    const userDiv = document.createElement('div');
+                    userDiv.classList.add('flex', 'justify-end', 'mb-4');
+                    userDiv.innerHTML = `
+                        <div class="chat-bubble-user">
+                            <p>${message}</p>
+                        </div>
+                    `;
+                    chatMessages.appendChild(userDiv);
+                    
+                    // Clear input
+                    chatInput.value = '';
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Add bot response after delay
+                    setTimeout(function() {
+                        const botDiv = document.createElement('div');
+                        botDiv.classList.add('flex', 'mb-4');
+                        botDiv.innerHTML = `
+                            <div class="chat-bubble-bot">
+                                <p class="text-gray-800">This is a test response to your message: "${message}"</p>
+                            </div>
+                        `;
+                        chatMessages.appendChild(botDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+                }
+            }
+            
+            // Send on button click
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Send on Enter key
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

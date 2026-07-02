@@ -1,0 +1,25 @@
+{
+  "name": "virtual-try-on-assistant",
+  "version": "1.0.0",
+  "description": "Virtual Makeup Try-On Assistant with AI Face Detection and Beauty Chatbot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "makeup",
+    "virtual-try-on",
+    "face-api",
+    "ai",
+    "beauty"
+  ],
+  "author": "Puneesh",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
